@@ -1,38 +1,56 @@
 package am.aua.set.cli;
-
 import am.aua.set.core.Card;
 import am.aua.set.core.Deck;
+import am.aua.set.core.Player;
 
-import java.util.Scanner;
 
-//public class SetConsole {
-    /*public void play() {
+import java.util.*;
+
+public class SetConsole {
+    public void play() {
         Scanner sc = new Scanner(System.in);
+        Player playerClass = new Player();
         System.out.println("Enter your name.");
-        String name = sc.nextLine();
-        int point = 0;
-        Deck deckClass = new Deck();
+        playerClass.setPoints(0);
+        int playerPoints = playerClass.getPoints();
+        playerClass.setName(sc.nextLine());
+        String playerName = playerClass.getName();
         Card cardClass = new Card();
-
-        Card[] cardsOnBoard = cardClass.createCardsOnBoard(deck);
-        for(int i = 0; i < cardsOnBoard.length; i++ ) {
-            System.out.println(cardsOnBoard[i]);
+        Deck deckClass = new Deck();
+        ArrayList<Card> deck = deckClass.createDeck();
+        ArrayList<Card> shuffledDeck = deckClass.shuffle(deck);
+        ArrayList<Card> cardsOnBoard = deckClass.createCardsOnBoard(shuffledDeck);
+        for (int i = 0; i <= shuffledDeck.size(); i++) {
+            if (i != 12) {
+                shuffledDeck.remove(i);
+            } else {
+                break;
+            }
         }
-        //remove 12 elements from board
-        while(deck.length != 0 && cardClass.isSetPresent(cardsOnBoard) == true) {
+        while(!(shuffledDeck.size() == 0 && !(cardClass.isSetPresent(cardsOnBoard)))) {
+            System.out.println("Choose three cards.");
             int firstCard = sc.nextInt();
             int secondCard = sc.nextInt();
             int thirdCard = sc.nextInt();
-            if(cardClass.isSet(cardsOnBoard[firstCard], cardsOnBoard[secondCard], cardsOnBoard[thirdCard]) == false) {
-                point--;
-                System.out.println("Not a set, try again.");
+            if(cardClass.isSet(cardsOnBoard.get(firstCard), cardsOnBoard.get(secondCard), cardsOnBoard.get(thirdCard))) {
+                playerPoints++;
+                cardsOnBoard.remove(firstCard);
+                cardsOnBoard.remove(secondCard);
+                cardsOnBoard.remove(thirdCard);
+                for(int i = 0; i < shuffledDeck.size(); i++) {
+                    if(i != 3) {
+                        cardsOnBoard.add(shuffledDeck.get(i));
+                        shuffledDeck.remove(i);
+                    }else {
+                        break;
+                    }
+
+                }
             }else{
-                point++;
-                //method to remove three cards from the cardsOnBoard
-                //method to add three new cards from the deck to cardsOnBoard
+                playerPoints--;
+                System.out.println("Not a set. Try again.");
             }
         }
-        System.out.println("Game over. " + name +" has" + point + " points.");
+        System.out.println("Game over." + playerName + " got " + playerPoints + " points");
     }
 }
-*/
